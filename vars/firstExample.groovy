@@ -1,6 +1,11 @@
 #!/usr/bin/groovy
 
-def call(Map parameters) {
+def call(body) {
+
+    def parameters = [:]
+    body.resolveStrategy = Closure.DELEGATE_FIRST
+    body.delegate = parameters
+    body()
 
     sh 'echo 123'
     approve {
