@@ -11,6 +11,8 @@ def call(body) {
 """
 
 //    slackSend channel: "#channel-name", message: proceedMessage
+    sh "echo ${proceedMessage}"
+    
     def id = approveRequestedEvent(app: "${env.JOB_NAME}", environment: config.environment)
 
     try {
