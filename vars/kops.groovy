@@ -8,14 +8,17 @@ def call(body) {
     body()
 
     if (parameters.action=='create') {
-    	sh 'echo create'
+    	def status = sh(returnStatus: true, script: "echo 123 > create.log")
+    	return status
     }
 
     if (parameters.action=='replace') {
-    	sh 'echo replace'
+    	def status = sh(returnStatus: true, script: "echo 123 > replace.log")
+    	return status
     }
 
     if (parameters.action!='create' && parameters.action!='replace') {
-    	sh 'echo unknown'
+    	def status = sh(returnStatus: true, script: "echo unknown > unknown.log")
+    	return 1
     }
 }
