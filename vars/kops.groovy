@@ -29,10 +29,10 @@ def call(body) {
     }
 */
 
-	if (assert !(parameters.action in actions)) {
+	if (!actions.contains(parameters.action)) {
 		output = 'unknown'
 	}
-	
+
     if ( status != 0) {
     	sh "echo ${output}"
     	currentBuild.result = 'FAILED'
