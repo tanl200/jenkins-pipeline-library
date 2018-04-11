@@ -7,7 +7,7 @@ def call(body) {
     body.delegate = config
     body()
 
-    def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config.message}
+    def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message}
 """
 
 //    slackSend channel: "#channel-name", message: proceedMessage
@@ -16,12 +16,4 @@ def call(body) {
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
         input message: "${proceedMessage}", submitter: config.approveUser    
     }
-    
-//    try {
-//        input id: 'Proceed', message: "\n${proceedMessage}"
-//    } catch (err) {
-//        approveReceivedEvent(id: id, approved: false)
-//        throw err
-//    }
-//    approveReceivedEvent(id: id, approved: true)
 }
