@@ -7,5 +7,5 @@ def call(body) {
     body.delegate = parameters
     body()
 
-    sh 'echo stage firstExample'
+    sh 'echo stage secondExample'
 }
