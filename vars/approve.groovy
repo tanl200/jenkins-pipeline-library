@@ -7,7 +7,7 @@ def call(body) {
     body.delegate = config
     body()
 
-    def proceedMessage = """{env.JOB_NAME} ${env.BUILD_NUMBER}: Would you like to promote version ${config.version} to apply
+    def proceedMessage = """${JOB_NAME} ${BUILD_NUMBER}: Would you like to promote version ${config.version} to apply
 """
 
 //    slackSend channel: "#channel-name", message: proceedMessage
