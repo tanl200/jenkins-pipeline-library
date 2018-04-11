@@ -13,7 +13,7 @@ def call(body) {
 //    slackSend channel: "#channel-name", message: proceedMessage
     sh "echo ${proceedMessage}"
 
-    timeout(time: config.timeout, unit: config.timeUnit) {
+    timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
         input message: "${proceedMessage}", submitter: config.approveUser    
     }
     
