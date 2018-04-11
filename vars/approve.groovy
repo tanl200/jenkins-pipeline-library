@@ -13,7 +13,9 @@ def call(body) {
 //    slackSend channel: "#channel-name", message: proceedMessage
     sh "echo ${proceedMessage}"
 
-    input message:'Approve deployment?', submitter: 'admin'
+    timeout(time: config.timeout, unit: config.timeUnit) {
+        input message: "${proceedMessage}", submitter: config.approveUser    
+    }
     
 //    try {
 //        input id: 'Proceed', message: "\n${proceedMessage}"
