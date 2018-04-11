@@ -4,7 +4,6 @@ def call(Map parameters = [:], body) {
 
     sh 'echo 123'
     approve {
-    	environment = parameters.environment ?: "unkown"
     	approveUser = parameters.approveUser ?: "admin"
     	timeout = parameters.timeout ?: 5
     	timeUnit = parameters.timeUnit ?: "DAYS"
