@@ -12,14 +12,14 @@ def call(body) {
 
 //    slackSend channel: "#channel-name", message: proceedMessage
     sh "echo ${proceedMessage}"
-    
-    def id = approveRequestedEvent(app: "${env.JOB_NAME}", environment: config.environment)
 
-    try {
-        input id: 'Proceed', message: "\n${proceedMessage}"
-    } catch (err) {
-        approveReceivedEvent(id: id, approved: false)
-        throw err
-    }
-    approveReceivedEvent(id: id, approved: true)
+    input message:'Approve deployment?', submitter: 'admin'
+    
+//    try {
+//        input id: 'Proceed', message: "\n${proceedMessage}"
+//    } catch (err) {
+//        approveReceivedEvent(id: id, approved: false)
+//        throw err
+//    }
+//    approveReceivedEvent(id: id, approved: true)
 }
