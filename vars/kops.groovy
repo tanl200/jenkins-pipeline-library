@@ -1,7 +1,6 @@
 #!/usr/bin/groovy
 
 def call(body) {
-
     def parameters = [:]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = parameters
@@ -17,14 +16,14 @@ def call(body) {
 
     if (parameters.action=='replace') {
     	status = sh(returnStatus: true, script: "echo replace > replace.log")
-    	output = readFile('create.replace').trim()
+    	output = readFile('replace.log').trim()
     }
 
     if (parameters.action!='create' && parameters.action!='replace') {
     	output = 'unknown'
     }
 
-    if ( status == 0) {
+    if ( status != 0) {
     	sh "echo ${output}"
     	currentBuild.result = 'FAILED'
     }
