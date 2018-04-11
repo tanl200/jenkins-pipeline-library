@@ -10,7 +10,7 @@ def call(body) {
     def proceedMessage = """{env.JOB_NAME} ${env.BUILD_NUMBER}: Would you like to promote version ${config.version} to apply
 """
 
-    slackSend channel: "#channel-name", message: proceedMessage
+//    slackSend channel: "#channel-name", message: proceedMessage
     def id = approveRequestedEvent(app: "${env.JOB_NAME}", environment: config.environment)
 
     try {
