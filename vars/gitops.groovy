@@ -15,6 +15,6 @@ def call(body) {
         sh("git checkout -b auto-${parameters?.branch} ")
         sh("git add .")
         sh("git commit -m 'auto-commit-${parameters?.commitMessage}'")
-        sh('git push origin auto-${parameters?.branch}')
+        sh("git push origin auto-${parameters?.branch}")
     }
 }
