@@ -21,7 +21,7 @@ def call(body) {
     }
 
     if (parameters.action=='update') {
-        status = sh(returnStatus: true, script: "echo update > replace.log")
+        status = sh(returnStatus: true, script: "echo update > update.log")
         output = readFile('update.log').trim()
     }
 
