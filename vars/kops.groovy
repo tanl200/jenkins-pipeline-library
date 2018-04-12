@@ -9,7 +9,7 @@ def call(body) {
     def status = 1 
     def output = ''
 
-    def actions = ['create', 'replace', 'export']
+    def actions = ['create', 'replace', 'update', 'export']
     if (parameters.action=='create') {
     	status = sh(returnStatus: true, script: "echo create > create.log")
     	output = readFile('create.log').trim()
@@ -20,8 +20,9 @@ def call(body) {
     	output = readFile('replace.log').trim()
     }
 
-    if (parameters.action!='export') {
-    	output = 'unknown'
+    if (parameters.action=='update') {
+        status = sh(returnStatus: true, script: "echo update > replace.log")
+        output = readFile('update.log').trim()
     }
 
 /*    if (parameters.action!='create' && parameters.action!='replace' && parameters.action!='export') {
