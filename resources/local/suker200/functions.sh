@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
-function getCommitMessageAction() {
+getCommitMessageAction() {
 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD) | cut -d ":" -f1)
 }
 
-function getCommitMessage() {
+getCommitMessage() {
 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD))
 }
 
-function getCommitID() {
+getCommitID() {
 	echo $(git rev-parse HEAD)
 }
