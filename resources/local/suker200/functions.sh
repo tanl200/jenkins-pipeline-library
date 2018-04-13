@@ -23,7 +23,7 @@ getCommitID() {
 	echo $(git rev-parse HEAD)
 }
 
-prepare() {
+prepareKops() {
 	_ACTION=$(getCommitAction)
 	_PROJECT=$(getProjectName)
 
