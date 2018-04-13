@@ -34,7 +34,7 @@ runKops() {
 	_ACTION=$(getCommitAction)
 	_PROJECT=$(getProjectName)
 	echo ${_ACTION}
-	
+
 	# Load ENV file generate from kops_generator.py
 	# . ./projects/${_PROJECT}/ENV
 	# CLUSTER_NAME=xxx
@@ -42,7 +42,7 @@ runKops() {
 
 	if [ "${_ACTION}" = "init" ]
 	then
-		python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml
+		python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
 		kops create --dry-run -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
 
 		. ./projects/${_PROJECT}/ENV
