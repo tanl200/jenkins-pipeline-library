@@ -52,15 +52,8 @@ runKops() {
 	# KOPS_VERSION=xxx
 	. ./projects/${_PROJECT}/ENV
 
-	
-
 	if [ "${_ACTION}" = "init" ]
 	then
-
-		echo $KOPS_STATE_STORE
-
-		echo $CLUSTER_NAME
-
 		# kops create -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
 
 		# kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
@@ -83,10 +76,11 @@ runTerraform() {
 	_PROJECT=$(getProjectName)
 	echo ${_ACTION}
 
-	cd projects/${_PROJECT}/$_TERRAFORM_DIR
-	terraform init
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
+
+	cd projects/${_PROJECT}/$_TERRAFORM_DIR
+	terraform init
 
 	if [ "${_ACTION}" = "plan" ]
 	then
