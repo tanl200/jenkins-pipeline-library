@@ -24,6 +24,7 @@ getCommitID() {
 }
 
 prepareKops() {
+	_PROJECT=$(getProjectName)
 	. ./${_PROJECT}/ENV
 
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
