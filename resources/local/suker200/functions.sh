@@ -24,7 +24,7 @@ getCommitID() {
 }
 
 prepareKops() {
-	. ./{_PROJECT}/ENV
+	. ./${_PROJECT}/ENV
 
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
 	~/.local/bin/pip2 install -r requirements.txt
@@ -39,7 +39,7 @@ runKops() {
 	# Load ENV file generate from kops_generator.py
 	# CLUSTER_NAME=xxx
 	# KOPS_VERSION=xxx
-	. ./{_PROJECT}/ENV
+	. ./${_PROJECT}/ENV
 
 	if [ ${_ACTION} == "init" ]
 	then
