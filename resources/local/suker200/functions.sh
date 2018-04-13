@@ -84,7 +84,7 @@ runTerraform() {
 
 	if [ "${_ACTION}" = "plan" ]
 	then
-		terraform plan
+		terraform plan > output && cat output && rm -f output
 	elif [ "${_ACTION}" = "apply" ]
 	then
 		terraform apply 
