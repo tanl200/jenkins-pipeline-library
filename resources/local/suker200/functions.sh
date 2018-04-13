@@ -43,9 +43,10 @@ runKops() {
 	if [ "${_ACTION}" = "init" ]
 	then
 		python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
-		kops create -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
 
 		. ./projects/${_PROJECT}/ENV
+
+		kops create -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
 
 		# kops update cluster --name=${CLUSTER_NAME} --yes --out=. --target=terraform 
 	elif [ "${_ACTION}" = "replace" ]
