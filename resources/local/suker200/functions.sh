@@ -37,7 +37,7 @@ prepareKops() {
 
 prepareTerraform() {
 	curl -L https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip -o /tmp/terraform.zip && \
-		 cd /tmp/ && unzip terraform.zip && cp terraform bin/ && chmod +x bin/terraform
+		 cd /tmp/ && unzip -o terraform.zip && cp terraform bin/ && chmod +x bin/terraform
 }
 
 runKops() {
