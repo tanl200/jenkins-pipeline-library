@@ -24,10 +24,8 @@ getCommitID() {
 }
 
 prepareKops() {
-	_PROJECT=$(getProjectName)
-
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
-	~/.local/bin/pip2 install -r --user requirements.txt
+	~/.local/bin/pip2 install --user -r requirements.txt
 
 	curl -L https://github.com/kubernetes/kops/releases/download/1.9.0/kops-linux-amd64 -o /tmp/kops && chmod +x /tmp/bin/kops
 
