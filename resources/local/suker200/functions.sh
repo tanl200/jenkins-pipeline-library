@@ -50,12 +50,12 @@ runKops() {
 
 		echo $CLUSTER_NAME
 
-		kops create -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
+		kops create -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
 
 		# kops update cluster --name=${CLUSTER_NAME} --yes --out=. --target=terraform 
 	elif [ "${_ACTION}" = "replace" ]
 	then
-		kops replace -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
+		kops replace -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
 		kops update cluster --name=${CLUSTER_NAME} --yes --out=. --target=terraform
 	else
 		exit 1
