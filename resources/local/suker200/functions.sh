@@ -27,14 +27,14 @@ prepareKops() {
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
 	~/.local/bin/pip2 install --user -r requirements.txt
 
-	curl -L https://github.com/kubernetes/kops/releases/download/1.9.0/kops-linux-amd64 -o /tmp/kops && chmod +x /tmp/bin/kops
-
+	# curl -L https://github.com/kubernetes/kops/releases/download/1.9.0/kops-linux-amd64 -o /tmp/kops && chmod +x /tmp/bin/kops
 }
 
 runKops() {
-	_ACTION=$(getOpsType)
+	_ACTION=$(getCommitAction)
 	_PROJECT=$(getProjectName)
 	# Load ENV file generate from kops_generator.py
+	# . ./projects/${_PROJECT}/ENV
 	# CLUSTER_NAME=xxx
 	# KOPS_VERSION=xxx
 
