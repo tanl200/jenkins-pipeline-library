@@ -25,7 +25,7 @@ getCommitID() {
 
 prepareKops() {
 	_PROJECT=$(getProjectName)
-	. ./${_PROJECT}/ENV
+	. ./projects/${_PROJECT}/ENV
 
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
 	~/.local/bin/pip2 install -r --user requirements.txt
@@ -40,16 +40,16 @@ runKops() {
 	# Load ENV file generate from kops_generator.py
 	# CLUSTER_NAME=xxx
 	# KOPS_VERSION=xxx
-	. ./${_PROJECT}/ENV
+	. ./projects/${_PROJECT}/ENV
 
 	if [ ${_ACTION} == "init" ]
 	then
-		python2 kops_generator.py --config providers/${_PROJECT}/config.yaml --template providers/${_PROJECT}/kops_template.yaml
-		kops create --dry-run -f providers/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
+		python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml
+		kops create --dry-run -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
 		# kops update cluster --name=${CLUSTER_NAME} --yes --out=. --target=terraform 
 	elif [ ${_ACTION} == "replace" ]
 	then
-		kops replace -f providers/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
+		kops replace -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
 		kops update cluster --name=${CLUSTER_NAME} --yes --out=. --target=terraform
 	else
 		exit 1
