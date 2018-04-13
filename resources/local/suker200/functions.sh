@@ -27,7 +27,7 @@ prepareKops() {
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
 	~/.local/bin/pip2 install --user -r requirements.txt
 
-	# curl -L https://github.com/kubernetes/kops/releases/download/1.9.0/kops-linux-amd64 -o /tmp/kops && chmod +x /tmp/bin/kops
+	# curl -L https://github.com/kubernetes/kops/releases/download/1.9.0/kops-linux-amd64 -o /tmp/bin/kops && chmod +x /tmp/bin/kops
 }
 
 runKops() {
@@ -43,7 +43,7 @@ runKops() {
 	if [ "${_ACTION}" = "init" ]
 	then
 		python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
-		kops create --dry-run -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
+		kops create -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
 
 		. ./projects/${_PROJECT}/ENV
 
