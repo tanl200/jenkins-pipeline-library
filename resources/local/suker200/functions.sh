@@ -52,7 +52,7 @@ runKops() {
 
 		# kops create -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
 
-		kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i ~/.ssh/id_rsa.pub --state=${KOPS_STATE_STORE}
+		kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
 
 		kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
 	elif [ "${_ACTION}" = "replace" ]
