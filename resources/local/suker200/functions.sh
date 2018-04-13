@@ -46,6 +46,9 @@ runKops() {
 
 		. ./projects/${_PROJECT}/ENV
 
+		echo $KOPS_STATE_STORE
+		echo $CLUSTER_NAME
+
 		kops create -f projects/${_PROJECT}/${KOPS_FILE:-kops_cluster.yaml}
 
 		# kops update cluster --name=${CLUSTER_NAME} --yes --out=. --target=terraform 
