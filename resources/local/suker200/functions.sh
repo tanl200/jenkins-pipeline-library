@@ -33,6 +33,8 @@ prepareKops() {
 runKops() {
 	_ACTION=$(getCommitAction)
 	_PROJECT=$(getProjectName)
+	echo ${_ACTION}
+	
 	# Load ENV file generate from kops_generator.py
 	# . ./projects/${_PROJECT}/ENV
 	# CLUSTER_NAME=xxx
