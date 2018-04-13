@@ -94,7 +94,6 @@ runTerraform() {
 		cd projects/${_PROJECT}/kops
 		terraform apply 
 	else
-	then
 		echo "${_ACTION} is not support action type"
 		exit 1
 	fi
