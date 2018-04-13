@@ -79,19 +79,20 @@ runKops() {
 
 runTerraform() {
 	_ACTION=${1:-$(getCommitAction)} #$(getCommitAction)
+	_TERRAFORM_DIR=${2:-.}
 	_PROJECT=$(getProjectName)
 	echo ${_ACTION}
 
+	cd projects/${_PROJECT}/$_TERRAFORM_DIR
+	terraform init
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
 
 	if [ "${_ACTION}" = "plan" ]
 	then
-		cd projects/${_PROJECT}/kops
 		terraform plan
 	elif [ "${_ACTION}" = "apply" ]
 	then
-		cd projects/${_PROJECT}/kops
 		terraform apply 
 	else
 		echo "${_ACTION} is not support action type"
