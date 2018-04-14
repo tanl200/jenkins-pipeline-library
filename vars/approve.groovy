@@ -1,7 +1,4 @@
 #!/usr/bin/groovy
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 def call(body) {
     // evaluate the body block, and collect configuration into the object
     def config = [:]
@@ -9,10 +6,7 @@ def call(body) {
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
-
-    JSONObject attachment = new JSONObject();
-    JSONArray attachments = new JSONArray();
-
+    
     def proceedMessage = "" // ""${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
 
     if (config?.slackFile != null ) {
@@ -23,7 +17,7 @@ def call(body) {
         """
     }
     
-    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage, attachments: attachments.toString()
+    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
 //    sh "echo ${proceedMessage}"
 
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
