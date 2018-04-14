@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
-  import net.sf.json.JSONArray;
-  import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 def call(body) {
     // evaluate the body block, and collect configuration into the object
@@ -25,7 +25,8 @@ def call(body) {
         attachments.add(attachment)
     }
     
-    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage, attachments: attachments.toString()
+//    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage, attachments: attachments.toString()
+    slackSend channel: "#${config.slackChannel ?: builds}", attachments: attachments.toString()
 //    sh "echo ${proceedMessage}"
 
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
