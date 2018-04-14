@@ -6,15 +6,12 @@ def call(body) {
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
-    
-    def proceedMessage = "" // ""${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
+
+    def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
 
     if (config?.slackFile != null ) {
         output = readFile("upload/${config.slackFile}").trim()
-        proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}
-    
-            ${output} 
-        """
+        sh ("echo ${output}")
     }
     
     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
