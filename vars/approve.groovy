@@ -10,7 +10,7 @@ def call(body) {
 
     def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
 
-    if (config.slackFile != "" ) {
+    if (config?.slackFile != null ) {
         output = readFile(config.slackFile).trim()    
     } else {
         output = 'empty'
