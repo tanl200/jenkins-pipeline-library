@@ -21,6 +21,8 @@ def call(body) {
         attachments.add(attachment)
     } else {
         output = 'empty'
+        attachment.put('data', output)
+        attachments.add(attachment)
     }
     
     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage, attachments: attachments.toString()
