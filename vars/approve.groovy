@@ -10,8 +10,8 @@ def call(body) {
     def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
 
     if (config?.slackFile != null ) {
-        output = readFile("upload/${config.slackFile}").trim()
-        sh ("echo ${output}")
+//        output = readFile("upload/${config.slackFile}").trim()
+        sh ("cat upload/${config.slackFile}")
     }
     
     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
