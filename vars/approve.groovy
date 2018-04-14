@@ -10,14 +10,15 @@ def call(body) {
     body.delegate = config
     body()
 
-    def JSONObject attachment = new JSONObject();
-    def JSONArray attachments = new JSONArray();
+    JSONObject attachment = new JSONObject();
+    JSONArray attachments = new JSONArray();
 
     def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
 
     if (config?.slackFile != null ) {
         output = readFile("upload/${config.slackFile}").trim()
         attachment.put('data', output)
+        attachment.put('okie', "testing")
         attachments.add(attachment)
     } else {
         output = 'empty'
@@ -26,7 +27,7 @@ def call(body) {
     }
     
 //    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage, attachments: attachments.toString()
-    slackSend channel: "#${config.slackChannel ?: builds}", attachments: attachments.toString()
+    slackSend channel: "#${config.slackChannel ?: build}", attachments: attachments.toString()
 //    sh "echo ${proceedMessage}"
 
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
