@@ -13,21 +13,17 @@ def call(body) {
     JSONObject attachment = new JSONObject();
     JSONArray attachments = new JSONArray();
 
-    def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
+    def proceedMessage = "" // ""${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
 
     if (config?.slackFile != null ) {
         output = readFile("upload/${config.slackFile}").trim()
-        attachment.put('data', output)
-        attachment.put('okie', "testing")
-        attachments.add(attachment)
-    } else {
-        output = 'empty'
-        attachment.put('data', output)
-        attachments.add(attachment)
+        proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}
+    
+            ${output} 
+        """
     }
     
-//    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage, attachments: attachments.toString()
-    slackSend channel: "#${config.slackChannel ?: build}", attachments: attachments.toString()
+    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage, attachments: attachments.toString()
 //    sh "echo ${proceedMessage}"
 
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
