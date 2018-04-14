@@ -90,7 +90,7 @@ runTerraform() {
 
 	if [ "${_ACTION}" = "plan" ]
 	then
-		terraform plan > output
+		terraform plan > ../../../upload/kops_upload
 	elif [ "${_ACTION}" = "apply" ]
 	then
 		terraform apply 
