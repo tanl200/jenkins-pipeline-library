@@ -9,8 +9,8 @@ def call(body) {
 
     def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message}"""
 
-//    slackSend channel: "#channel-name", message: proceedMessage
-    sh "echo ${proceedMessage}"
+    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
+//    sh "echo ${proceedMessage}"
 
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
         input message: "${proceedMessage}", submitter: config.approveUser    

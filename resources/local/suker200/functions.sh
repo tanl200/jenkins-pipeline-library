@@ -52,22 +52,28 @@ runKops() {
 	# KOPS_VERSION=xxx
 	. ./projects/${_PROJECT}/ENV
 
-	if [ "${_ACTION}" = "init" ]
-	then
-		# kops create -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
+	kops replace --force -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
 
-		# kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
+	kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
 
-		kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
+	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
 
-	elif [ "${_ACTION}" = "replace" ]
-	then
-		kops replace -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
-		kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform  --state=${KOPS_STATE_STORE}
-	else
-		echo "${_ACTION} is not support action type"
-		exit 1
-	fi
+	# if [ "${_ACTION}" = "init" ]
+	# then
+	# 	# kops replace --force -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
+
+	# 	# kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
+
+	# 	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
+
+	# elif [ "${_ACTION}" = "replace" ]
+	# then
+	# 	kops replace -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
+	# 	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform  --state=${KOPS_STATE_STORE}
+	# else
+	# 	echo "${_ACTION} is not support action type"
+	# 	exit 1
+	# fi
 }
 
 runTerraform() {
@@ -84,7 +90,7 @@ runTerraform() {
 
 	if [ "${_ACTION}" = "plan" ]
 	then
-		terraform plan > output && cat output && rm -f output
+		terraform plan > output
 	elif [ "${_ACTION}" = "apply" ]
 	then
 		terraform apply 
