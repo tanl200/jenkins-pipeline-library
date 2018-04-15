@@ -2,8 +2,8 @@
 def checkDiff() {
     def diff = 0
 
-    sh (returnStdout: true, script: "git diff | wc -l ").trim()
-    if ( diff != 0 ) {
+    diff = sh(returnStdout: true, script: "git --no-pager diff | wc -l ").trim()
+    if ( diff != "0" ) {
         return true
     } else {
         return false
