@@ -61,13 +61,6 @@ runKops() {
 }
 
 runTerraform() {
-	if [ ! -z ${BRANCH_NAME} ]
-	then
-		# When gitops create new branch for push to repo, we must switch back to build branch
-		git checkout ${BRANCH_NAME}
-		git pull
-	fi
-
 	_ACTION=${1:-$(getCommitAction)}
 	_TERRAFORM_DIR=${2:-.}
 	_PROJECT=$(getProjectName)
