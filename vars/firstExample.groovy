@@ -7,5 +7,5 @@ def call(body) {
     body.delegate = parameters
     body()
 
-    sh ("echo ${parameters.action}")
+    println "${parameters.action}"
 }
