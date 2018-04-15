@@ -2,10 +2,10 @@
 
 def call(body) {
 
-    def parameters = [:]
+    def config = [:]
     body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = parameters
+    body.delegate = config
     body()
 
-    println "${parameters.action}"
+    println "${config.action}"
 }
