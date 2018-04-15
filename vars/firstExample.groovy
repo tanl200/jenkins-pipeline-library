@@ -1,14 +1,6 @@
 #!/usr/bin/groovy
 
-def call(body) {
+def call(action) {
 
-    def config = [:]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = config
-    body()
-
-    stage('test') {
-    	println config.action	
-    }
-    
+	println action	
 }
