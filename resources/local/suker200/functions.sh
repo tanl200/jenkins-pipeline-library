@@ -57,26 +57,12 @@ runKops() {
 	kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
 
 	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
-
-	# if [ "${_ACTION}" = "init" ]
-	# then
-	# 	# kops replace --force -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
-
-	# 	# kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
-
-	# 	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
-
-	# elif [ "${_ACTION}" = "replace" ]
-	# then
-	# 	kops replace -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
-	# 	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform  --state=${KOPS_STATE_STORE}
-	# else
-	# 	echo "${_ACTION} is not support action type"
-	# 	exit 1
-	# fi
 }
 
 runTerraform() {
+	# When gitops create new branch for push to repo, we must switch back to build branch
+	git checkout ${BRANCH_NAME}
+
 	_ACTION=${1:-$(getCommitAction)} #$(getCommitAction)
 	_TERRAFORM_DIR=${2:-.}
 	_PROJECT=$(getProjectName)
@@ -93,7 +79,7 @@ runTerraform() {
 		terraform plan > ../../../upload/kops_upload
 	elif [ "${_ACTION}" = "apply" ]
 	then
-		terraform apply 
+		terraform apply  -input=false -auto-approve 
 	else
 		echo "${_ACTION} is not support action type"
 		exit 1
