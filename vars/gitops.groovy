@@ -4,7 +4,7 @@ def checkDiff() {
 
     diff = sh(returnStdout: true, script: "git --no-pager diff | wc -l ").trim()
     sh("echo diff is : ${diff} ")
-    
+
     if ( diff != "0" ) {
         return true
     } else {
@@ -20,14 +20,12 @@ def call(body) {
 
     if (parameters.action=='push') {
         sshagent (credentials: ['f1fe8468-e322-4b55-8599-0a3a6b79acbb']) {
-            if (checkDiff()) {
-                sh("git config --global user.email ${parameters?.email}")
-                sh("git config --global user.name ${parameters?.user}")
-                sh("git checkout -b auto-${BUILD_NUMBER} ")
-                sh("git add .")
-                sh("git commit -m 'auto-commit-${parameters?.commitMessage}'")
-                sh("git push origin auto-${BUILD_NUMBER}")                
-            }
+            sh("git config --global user.email ${parameters?.email}")
+            sh("git config --global user.name ${parameters?.user}")
+            sh("git checkout -b auto-${BUILD_NUMBER} ")
+            sh("git add .")
+            sh("git commit -m 'auto-commit-${parameters?.commitMessage}'")
+            sh("git push origin auto-${BUILD_NUMBER}")                
         }        
     }
 
