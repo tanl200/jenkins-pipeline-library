@@ -3,6 +3,8 @@ def checkDiff() {
     def diff = 0
 
     diff = sh(returnStdout: true, script: "git --no-pager diff | wc -l ").trim()
+    sh("echo diff is : ${diff} ")
+    
     if ( diff != "0" ) {
         return true
     } else {
@@ -15,9 +17,6 @@ def call(body) {
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = parameters
     body()
-
-    def status = 1 
-    def output = ''
 
     if (parameters.action=='push') {
         sshagent (credentials: ['f1fe8468-e322-4b55-8599-0a3a6b79acbb']) {
