@@ -1,6 +1,7 @@
 #!/usr/bin/groovy
 
-def call(action) {
+def call(action, text2) {
 
-	println action	
+	println "${action}"
+	println "${text2}"
 }
