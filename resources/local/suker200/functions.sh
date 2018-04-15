@@ -57,13 +57,16 @@ runKops() {
 	kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
 
 	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
+
 }
 
 runTerraform() {
-	# When gitops create new branch for push to repo, we must switch back to build branch
-	git checkout ${BRANCH_NAME}
+	if [ ! -z ${BRANCH_NAME} ] {
+		# When gitops create new branch for push to repo, we must switch back to build branch
+		git checkout ${BRANCH_NAME}		
+	}
 
-	_ACTION=${1:-$(getCommitAction)} #$(getCommitAction)
+	_ACTION=${1:-$(getCommitAction)}
 	_TERRAFORM_DIR=${2:-.}
 	_PROJECT=$(getProjectName)
 	echo ${_ACTION}
