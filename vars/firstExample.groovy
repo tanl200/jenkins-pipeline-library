@@ -7,5 +7,8 @@ def call(body) {
     body.delegate = config
     body()
 
-    println "${config.action}"
+    stage('test') {
+    	println config.action	
+    }
+    
 }
