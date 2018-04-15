@@ -6,6 +6,6 @@ def call(body) {
     body.delegate = config
     body()
 
-    println config.action
+    println config.action2
     println config.text2
 }
