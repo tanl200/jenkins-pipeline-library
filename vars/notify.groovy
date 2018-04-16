@@ -30,10 +30,10 @@ def call(body) {
 	attachments.add(attachment);
 */
 	String encodedUrl = URLEncoder.encode(config.title_link, "UTF-8");
-	attachment.put('text', "hello");
-	attachment.put('fallback', "moto");
+	attachment.put('text', config.message);
+	attachment.put('fallback', config.message);
 	attachment.put('color', color);
-	attachment.put('title',"okie");
+	attachment.put('title',config.title);
 	attachment.put('title_link', encodedUrl);
 	attachments.add(attachment)
     slackSend(color: 'good', channel: "#${config.slackChannel}", attachments: attachments.toString())
