@@ -21,5 +21,5 @@ def call(body) {
 	attachments.add(attachment);
 	println attachments.toString()
 
-    slackSend channel: "#k8s-build", message: proceedMessage, attachments: attachments.toString()
+    slackSend channel: "#k8s-build", message: "prcess image for test", attachments: attachments.toString()
 }
