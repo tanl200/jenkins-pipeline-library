@@ -12,14 +12,19 @@ def call(body) {
 
     println config.action2
     println config.text2
+    def output = ''
 
 	JSONObject attachment = new JSONObject();
-	attachment.put('text','I find your lack of faith disturbing!');
-	attachment.put('fallback','Hey, Vader seems to be mad at you.');
+	output = readFile('upload/kops_upload').trim()
+	attachment.put('text', output);
+	attachment.put('fallback', output);
 	attachment.put('color','#ff0000');
 	JSONArray attachments = new JSONArray();
 	attachments.add(attachment);
 	println attachments.toString()
 
-    slackSend channel: "#k8s-build", message: "prcess image for test", attachments: attachments.toString()
+
+
+
+    slackSend channel: "#k8s-build", attachments: attachments.toString()
 }
