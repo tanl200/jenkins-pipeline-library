@@ -11,6 +11,8 @@ def call(body) {
     body()
 
     def color = ''
+    
+    println config.title_link
 
     if (currentBuild.currentResult=='SUCCESS') {
     	color = 'good'
@@ -31,7 +33,7 @@ def call(body) {
 	attachment.put('fallback', "moto");
 	attachment.put('color', color);
 	attachment.put('title',"okie");
-	attachment.put('title_link',"${config.title_link}");
+	attachment.put('title_link', config.title_link);
 	attachments.add(attachment)
     slackSend(color: 'good', channel: "#${config.slackChannel}", attachments: attachments.toString())
 }
