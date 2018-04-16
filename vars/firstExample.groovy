@@ -15,7 +15,7 @@ def call(body) {
     def output = ''
 
 	JSONObject attachment = new JSONObject();
-	output = readFile('upload/kops_upload').trim()
+	output = readFile('upload/kops_upload')
 	attachment.put('text', output);
 	attachment.put('fallback', output);
 	attachment.put('color','#ff0000');
