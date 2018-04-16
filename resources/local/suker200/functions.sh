@@ -102,7 +102,7 @@ prepareTerraform() {
 
 	if [ ! -e "${_TEMP_DIR}/terraform" ]; then
 		curl -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o ${_TEMP_DIR}/terraform.zip && \
-			 cd ${_TEMP_DIR}/ && unzip -o terraform.zip && chmod +x terraform
+			 cd ${_TEMP_DIR}/ && unzip -o terraform.zip && chmod +x terraform && cd $WORKSPACE
 	fi
 }
 
