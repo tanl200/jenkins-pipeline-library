@@ -1,7 +1,7 @@
 #!/usr/bin/groovy
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+//import net.sf.json.JSONArray;
+//import net.sf.json.JSONObject;
 
 def call(body) {
     def config = [:]
@@ -19,7 +19,8 @@ def call(body) {
     	color = 'danger'
     }
 
-/*  JSONArray attachments = new JSONArray();
+/*  
+	JSONArray attachments = new JSONArray();
 	JSONObject attachment = new JSONObject();
 	attachment.put('text', "${config?.message}");
 	attachment.put('fallback', "${config?.message}");
