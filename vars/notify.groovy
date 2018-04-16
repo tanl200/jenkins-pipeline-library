@@ -36,5 +36,5 @@ def call(body) {
 	attachment.put('title_link', config.title_link);
 	attachment.put('pretext', config.message);
 	attachments.add(attachment)
-    slackSend(color: 'good', channel: "#${config.slackChannel}", text: config.message,attachments: attachments.toString())
+    slackSend(color: 'good', channel: "#${config.slackChannel}", text: "okie man",attachments: attachments.toString())
 }
