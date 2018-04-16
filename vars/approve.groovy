@@ -14,7 +14,13 @@ def call(body) {
         sh ("cat upload/${config.slackFile}")
     }
     
-    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
+    notify {
+        slackChannel: 'k8s-build'
+        message: proceedMessage
+        title: "Request for Approve"
+        title_link: "${BUILD_URL}"
+    }
+//     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
 //    sh "echo ${proceedMessage}"
 
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
