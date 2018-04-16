@@ -15,10 +15,10 @@ def call(body) {
         title = "Request for Approve"
         title_link = "${BUILD_URL}"
 */    }
-     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
+     slackSend channel: "#${config.slackChannel}", message: proceedMessage
 //    sh "echo ${proceedMessage}"
 
-    timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
+    timeout(time: config.timeOut ?: 5, unit: config.timeUnit ?: "DAYS" ) {
         input message: "${proceedMessage}", submitter: config.approveUser    
     }
 }
