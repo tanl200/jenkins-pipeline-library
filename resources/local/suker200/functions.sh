@@ -7,7 +7,7 @@ set -e pipefail
 trap finish EXIT
 
 finish() {
-	if [ -d ${_TEMP_DIR}} ]; then
+	if [ -d "${_TEMP_DIR}" ]; then
 		rm -rf ${_TEMP_DIR}
 	fi
 }
@@ -42,7 +42,7 @@ Kops() {
 	# KOPS_VERSION=xxx
 	. ./projects/${_PROJECT}/ENV
 
-	if [ !-d ${_TEMP_DIR} ]; then
+	if [ ! -d "${_TEMP_DIR}" ]; then
 		mkdir -p ${_TEMP_DIR}
 	fi
 
@@ -97,7 +97,7 @@ Terraform() {
 }
 
 prepareTerraform() {
-	if [ !-d ${_TEMP_DIR} ]; then
+	if [ ! -d "${_TEMP_DIR}" ]; then
 		mkdir -p ${_TEMP_DIR}
 	fi
 
