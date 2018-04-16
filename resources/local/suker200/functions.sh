@@ -86,7 +86,7 @@ Terraform() {
 		runTerraform plan ${_PROJECT} ${_TERRAFORM_DIR} ${_SUFFIX_NAME}
 
 	elif [ "${_RUN}" = "apply" ]; then
-		runTerraform apply
+		runTerraform apply ${_PROJECT} ${_TERRAFORM_DIR}
 
 	else
 		echo "${_RUN} is not support action type"
