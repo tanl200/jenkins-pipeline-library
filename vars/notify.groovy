@@ -2,7 +2,6 @@
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import java.net.URLEncoder;
 
 def call(body) {
     def config = [:]
@@ -20,21 +19,16 @@ def call(body) {
     	color = 'danger'
     }
 
-    JSONArray attachments = new JSONArray();
+/*  JSONArray attachments = new JSONArray();
 	JSONObject attachment = new JSONObject();
-/*	attachment.put('text', "${config?.message}");
+	attachment.put('text', "${config?.message}");
 	attachment.put('fallback', "${config?.message}");
 	attachment.put('color', color);
 	attachment.put('title',"${config?.title}");
 	attachment.put('title_link',"${config?.title_link}");
 	attachments.add(attachment);
 */
-	String encodedUrl = URLEncoder.encode(config.title_link, "UTF-8");
-	attachment.put('fallback', config.message);
-	attachment.put('color', color);
-	attachment.put('title',config.title);
-	attachment.put('title_link', config.title_link);
-	attachment.put('pretext', config.message);
-	attachments.add(attachment)
-    slackSend(color: 'good', channel: "#${config.slackChannel}", text: "okie man",attachments: attachments.toString())
+
+	slackSend(color: color, channel: "#${config.slackChannel}", message: config.message)
+//    slackSend(color: 'good', channel: "#${config.slackChannel}", attachments: attachments.toString())
 }
