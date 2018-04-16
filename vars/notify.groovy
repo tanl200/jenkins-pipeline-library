@@ -15,7 +15,7 @@ def call(body) {
     if (currentBuild.currentResult=='SUCCESS') {
     	color = '#008000'
     } else {
-    	'#ff0000'
+    	color = '#ff0000'
     }
 
     JSONArray attachments = new JSONArray();
