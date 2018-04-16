@@ -28,5 +28,5 @@ def call(body) {
 	attachment.put('title_link',"${config?.title_link ?: 'Missing_Title_Link'}");
 	attachments.add(attachment);
 
-    slackSend channel: "#${config.slackChannel ?: k8s-build}", attachments: attachments.toString()
+    slackSend channel: "#${config.slackChannel ?: 'k8s-build'}", attachments: attachments.toString()
 }
