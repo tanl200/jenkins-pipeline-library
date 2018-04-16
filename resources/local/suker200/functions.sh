@@ -78,6 +78,8 @@ Terraform() {
 
 	. ./projects/${_PROJECT}/ENV
 
+	prepareTerraform
+
 	if [ "${_RUN}" = "plan" ]; then
 		_TERRAFORM_DIR=${2:-.}
 		_SUFFIX_NAME=${3}
@@ -85,9 +87,6 @@ Terraform() {
 
 	elif [ "${_RUN}" = "apply" ]; then
 		runTerraform apply
-
-	elif [ "${_RUN}" = "prepare" ]; then
-		prepareTerraform
 
 	else
 		echo "${_RUN} is not support action type"
@@ -101,8 +100,10 @@ prepareTerraform() {
 		mkdir -p ${_TEMP_DIR}
 	fi
 
-	curl -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o ${_TEMP_DIR}/terraform.zip && \
-		 cd ${_TEMP_DIR}/ && unzip -o terraform.zip && chmod +x terraform
+	if [ ! -e "${_TEMP_DIR}/terraform" ]; then
+		curl -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o ${_TEMP_DIR}/terraform.zip && \
+			 cd ${_TEMP_DIR}/ && unzip -o terraform.zip && chmod +x terraform
+	fi
 }
 
 runTerraform() {
