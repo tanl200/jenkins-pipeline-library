@@ -30,7 +30,7 @@ def call(body) {
 	attachments.add(attachment);
 */
 	String encodedUrl = URLEncoder.encode(config.title_link, "UTF-8");
-	attachment.put('text', "ajsdjahsdahsjkh");
+	attachment.put('fallback', config.message);
 	attachment.put('color', color);
 	attachment.put('title',config.title);
 	attachment.put('title_link', config.title_link);
