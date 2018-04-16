@@ -24,7 +24,7 @@ def call(body) {
 	println attachments.toString()
 
 
-
+	sh(". ./functions.sh && runUpload k8s-v1 ${JOB_NAME}"-"${BUILD_NUMBER} "../../../upload/kops_upload" ")
 
     slackSend channel: "#k8s-build", attachments: attachments.toString()
 }

@@ -75,6 +75,7 @@ runTerraform() {
 	if [ "${_ACTION}" = "plan" ]
 	then
 		terraform plan > ../../../upload/kops_upload
+		runUpload ${_PROJECT} ${JOB_NAME}"-"${BUILD_NUMBER} "../../../upload/kops_upload" 
 	elif [ "${_ACTION}" = "apply" ]
 	then
 		terraform apply  -input=false -auto-approve 
@@ -82,4 +83,12 @@ runTerraform() {
 		echo "${_ACTION} is not support action type"
 		exit 1
 	fi
+}
+
+runUpload() {
+	_PROJECT=$1
+	_FILE_NAME=$2
+	_FILE_UPLOAD_NAME=$3
+	_UPLOAD_TOKEN=${_UPLOAD_TOKEN:-unkown}
+	curl -Ffile=@${_FILE_UPLOAD_NAME} http://127.0.0.1:25478/${_PROJECT}/${_FILE_NAME}?token=${UPLOAD_TOKEN}
 }
