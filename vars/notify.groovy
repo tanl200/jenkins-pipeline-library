@@ -13,9 +13,9 @@ def call(body) {
     def color = ''
 
     if (currentBuild.currentResult=='SUCCESS') {
-    	color = '#008000'
+    	color = 'good'
     } else {
-    	color = '#ff0000'
+    	color = 'danger'
     }
 
     JSONArray attachments = new JSONArray();
@@ -27,5 +27,5 @@ def call(body) {
 	attachment.put('title_link',"${config?.title_link}");
 	attachments.add(attachment);
 
-    slackSend(color: '#ff0000', channel: "#${config.slackChannel}", attachments: attachments.toString())
+    slackSend(color: 'good', channel: "#${config.slackChannel}", attachments: attachments.toString())
 }
