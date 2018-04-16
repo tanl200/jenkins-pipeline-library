@@ -7,18 +7,13 @@ def call(body) {
     body.delegate = config
     body()
 
-    def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
-
-    if (config?.slackFile != null ) {
-//        output = readFile("upload/${config.slackFile}").trim()
-        sh ("cat upload/${config.slackFile}")
-    }
+    def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message}"""
     
     notify {
-        slackChannel: 'k8s-build'
-        message: proceedMessage
-        title: "Request for Approve"
-        title_link: "${BUILD_URL}"
+        slackChannel = "${config.slackChannel}"
+        message = "${proceedMessage}"
+        title = "Request for Approve"
+        title_link = "${BUILD_URL}"
     }
 //     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
 //    sh "echo ${proceedMessage}"
