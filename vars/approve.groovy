@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-def call(timeOut, timeUnit, approveUser, slackChannel, slackFile, message) {
+def call(body) {
     // evaluate the body block, and collect configuration into the object
     def config = [:]
     def output = ''
@@ -10,14 +10,14 @@ def call(timeOut, timeUnit, approveUser, slackChannel, slackFile, message) {
     def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message} via ${BUILD_URL}"""
 
     if (config?.slackFile != null ) {
-//        output = readFile("upload/${slackFile}").trim()
-        sh ("cat upload/${slackFile}")
+//        output = readFile("upload/${config.slackFile}").trim()
+        sh ("cat upload/${config.slackFile}")
     }
     
-    slackSend channel: "#${slackChannel ?: builds}", message: proceedMessage
+    slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
 //    sh "echo ${proceedMessage}"
 
-    timeout(time: timeOut ?: 5, unit: timeUnit ?: "DAYS" ) {
-        input message: "${proceedMessage}", submitter: approveUser    
+    timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
+        input message: "${proceedMessage}", submitter: config.approveUser    
     }
 }
