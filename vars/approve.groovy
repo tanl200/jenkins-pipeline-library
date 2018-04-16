@@ -9,13 +9,13 @@ def call(body) {
 
     def proceedMessage = """${JOB_NAME} - ${BUILD_NUMBER}: ${config?.message}"""
     
-    notify {
+/*    notify {
         slackChannel = "${config.slackChannel}"
         message = "${proceedMessage}"
         title = "Request for Approve"
         title_link = "${BUILD_URL}"
-    }
-//     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
+*/    }
+     slackSend channel: "#${config.slackChannel ?: builds}", message: proceedMessage
 //    sh "echo ${proceedMessage}"
 
     timeout(time: config.timeout ?: 5, unit: config.timeUnit ?: "DAYS" ) {
