@@ -1,7 +1,16 @@
 #!/bin/sh
-export PATH=$PATH:~/.local/bin:/tmp/bin/
+_TEMP_DIR="/tmp/${BUILD_NUMBER}"
+
+export PATH=$PATH:~/.local/bin:${_TEMP_DIR}
 
 set -e pipefail
+trap finish EXIT
+
+finish() {
+	if [ -d ${_TEMP_DIR}} ]; then
+		rm -rf ${_TEMP_DIR}
+	fi
+}
 
 getOpsType() {
 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD) | cut -d ":" -f1)
@@ -23,27 +32,8 @@ getCommitID() {
 	echo $(git rev-parse HEAD)
 }
 
-prepareKops() {
-	_ACTION=$(getCommitAction)
+Kops() {
 	_PROJECT=$(getProjectName)
-
-	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
-	~/.local/bin/pip2 install --user -r requirements.txt
-
-	# curl -L https://github.com/kubernetes/kops/releases/download/1.9.0/kops-linux-amd64 -o /tmp/bin/kops && chmod +x /tmp/bin/kops
-
-	
-}
-
-prepareTerraform() {
-	curl -L https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip -o /tmp/terraform.zip && \
-		 cd /tmp/ && unzip -o terraform.zip && cp terraform bin/ && chmod +x bin/terraform
-}
-
-runKops() {
-	_ACTION=$(getCommitAction)
-	_PROJECT=$(getProjectName)
-	echo ${_ACTION}
 
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
@@ -52,37 +42,84 @@ runKops() {
 	# KOPS_VERSION=xxx
 	. ./projects/${_PROJECT}/ENV
 
+	if [ !-d ${_TEMP_DIR} ]; then
+		mkdir -p ${_TEMP_DIR}
+	fi
+
+	prepareKops
+
+	runKops
+}
+
+prepareKops() {
+	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
+	~/.local/bin/pip2 install --user -r requirements.txt
+
+	curl -L https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 -o ${_TEMP_DIR}/kops && chmod +x ${_TEMP_DIR}/kops
+}
+
+
+runKops() {
 	kops replace --force -f projects/${_PROJECT}/kops/${KOPS_FILE:-kops_cluster.yaml} --state=${KOPS_STATE_STORE}
 
 	kops create secret --name=${CLUSTER_NAME} sshpublickey admin -i projects/example/id_rsa.pub --state=${KOPS_STATE_STORE}
 
 	kops update cluster --name=${CLUSTER_NAME} --yes --out=projects/${_PROJECT}/kops/ --target=terraform --state=${KOPS_STATE_STORE}
-
 }
 
-runTerraform() {
-	_ACTION=${1:-$(getCommitAction)}
-	_TERRAFORM_DIR=${2:-.}
-	_SUFFIX_NAME=${3}
+Terraform() {
 	_PROJECT=$(getProjectName)
-	echo ${_ACTION}
+
+	_RUN=$1
 
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
+	# TERRAFORM_VERSION=xxx
+
+	. ./projects/${_PROJECT}/ENV
+
+	if [ "${_RUN}" = "plan" ]; then
+		_TERRAFORM_DIR=${2:-.}
+		_SUFFIX_NAME=${3}
+		runTerraform plan ${_PROJECT} ${_TERRAFORM_DIR} ${_SUFFIX_NAME}
+
+	elif [ "${_RUN}" = "apply" ]; then
+		runTerraform apply
+
+	elif [ "${_RUN}" = "prepare" ]; then
+		prepareTerraform
+
+	else
+		echo "${_RUN} is not support action type"
+		exit 1
+	fi
+
+}
+
+prepareTerraform() {
+	if [ !-d ${_TEMP_DIR} ]; then
+		mkdir -p ${_TEMP_DIR}
+	fi
+
+	curl -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o ${_TEMP_DIR}/terraform.zip && \
+		 cd ${_TEMP_DIR}/ && unzip -o terraform.zip && chmod +x terraform
+}
+
+runTerraform() {
+	_ACTION=$1
+	_PROJECT=$2
+	_TERRAFORM_DIR=$3
+	_SUFFIX_NAME=$4
 
 	cd projects/${_PROJECT}/$_TERRAFORM_DIR
 	terraform init
 
-	if [ "${_ACTION}" = "plan" ]
-	then
+	if [ "${_ACTION}" = "plan" ]; then
 		terraform plan > ../../../upload/kops_upload
 		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_upload" ${_SUFFIX_NAME} 
-	elif [ "${_ACTION}" = "apply" ]
-	then
+
+	elif [ "${_ACTION}" = "apply" ]; then
 		terraform apply  -input=false -auto-approve 
-	else
-		echo "${_ACTION} is not support action type"
-		exit 1
 	fi
 }
 
