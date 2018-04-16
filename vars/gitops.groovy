@@ -24,6 +24,9 @@ def call(body) {
 
     println "${parameters.type}"
     println "${parameters.type2}"
+
+    println "check branch info"
+    println "${parameters.branch}"
     
 
     if (parameters.type=='push') {
@@ -41,7 +44,7 @@ def call(body) {
 
     if (parameters.type=='pull') {
         sshagent (credentials: ['f1fe8468-e322-4b55-8599-0a3a6b79acbb']) {
-            sh("git checkout -b ${parameters.branch} ")
+            sh("git checkout ${parameters.branch} ")
             sh("git pull")
         }
     }
