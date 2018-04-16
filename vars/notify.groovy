@@ -12,7 +12,7 @@ def call(body) {
 
     def color = ''
 
-    if (currentBuild.currentResult='SUCCESS') {
+    if (currentBuild.currentResult=='SUCCESS') {
     	color = '#008000'
     } else {
     	'#ff0000'

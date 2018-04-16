@@ -63,6 +63,7 @@ runKops() {
 runTerraform() {
 	_ACTION=${1:-$(getCommitAction)}
 	_TERRAFORM_DIR=${2:-.}
+	_SUFFIX_NAME=${3}
 	_PROJECT=$(getProjectName)
 	echo ${_ACTION}
 
@@ -75,7 +76,7 @@ runTerraform() {
 	if [ "${_ACTION}" = "plan" ]
 	then
 		terraform plan > ../../../upload/kops_upload
-		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER}-non_kops "../../../upload/kops_upload" 
+		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} ${_SUFFIX_NAME} "../../../upload/kops_upload" 
 	elif [ "${_ACTION}" = "apply" ]
 	then
 		terraform apply  -input=false -auto-approve 
@@ -89,7 +90,8 @@ runUpload() {
 	_PROJECT=$1
 	_FILE_NAME=$2
 	_FILE_UPLOAD_NAME=$3
+	_SUFFIX_NAME=$4
 	_UPLOAD_TOKEN=${UPLOAD_TOKEN:-unkown}
 	_UPLOAD_SERVER=${UPLOAD_SERVER:-127.0.0.1}
-	curl -X PUT  -Ffile=@${_FILE_UPLOAD_NAME} ${_UPLOAD_SERVER}/files/${_PROJECT}-${_FILE_NAME}?token=${_UPLOAD_TOKEN}
+	curl -X PUT  -Ffile=@${_FILE_UPLOAD_NAME} ${_UPLOAD_SERVER}/files/${_PROJECT}-${_FILE_NAME}${_SUFFIX_NAME}?token=${_UPLOAD_TOKEN}
 }
