@@ -29,7 +29,7 @@ def call(body) {
 	attachment.put('title_link',"${config?.title_link}");
 	attachments.add(attachment);
 */
-	String encodedUrl = URLEncoder.encode(url, "UTF-8");
+	String encodedUrl = URLEncoder.encode(config.title_link, "UTF-8");
 	attachment.put('text', "hello");
 	attachment.put('fallback', "moto");
 	attachment.put('color', color);
