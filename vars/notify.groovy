@@ -2,7 +2,7 @@
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
+import java.net.URLEncoder;
 
 def call(body) {
     def config = [:]
@@ -11,7 +11,7 @@ def call(body) {
     body()
 
     def color = ''
-    
+
     println config.title_link
 
     if (currentBuild.currentResult=='SUCCESS') {
@@ -33,7 +33,7 @@ def call(body) {
 	attachment.put('fallback', "moto");
 	attachment.put('color', color);
 	attachment.put('title',"okie");
-	attachment.put('title_link', config.title_link);
+	attachment.put('title_link', URLEncoder.encode(config.title_link, "UTF-8"));
 	attachments.add(attachment)
     slackSend(color: 'good', channel: "#${config.slackChannel}", attachments: attachments.toString())
 }
