@@ -22,10 +22,10 @@ def call(body) {
 	JSONObject attachment = new JSONObject();
 	attachment.put('text', "${config?.message}");
 	attachment.put('fallback', "${config?.message}");
-	attachment.put('color',color);
+	attachment.put('color', '#ff0000');
 	attachment.put('title',"${config?.title}");
 	attachment.put('title_link',"${config?.title_link}");
 	attachments.add(attachment);
 
-    slackSend channel: "#${config.slackChannel}", attachments: attachments.toString()
+    slackSend(color: '#ff0000', channel: "#${config.slackChannel}", attachments: attachments.toString())
 }
