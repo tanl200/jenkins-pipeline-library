@@ -31,7 +31,7 @@ def call(body) {
 	attachment.put('fallback', "moto");
 	attachment.put('color', color);
 	attachment.put('title',"okie");
-	attachment.put('title_link',"yeye");
+	attachment.put('title_link',"https://vnexpress.net");
 	attachments.add(attachment)
     slackSend(color: 'good', channel: "#${config.slackChannel}", attachments: attachments.toString())
 }
