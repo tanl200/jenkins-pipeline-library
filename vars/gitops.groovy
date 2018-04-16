@@ -18,17 +18,6 @@ def call(body) {
     body.delegate = parameters
     body()
 
-    println "test git parameters"
-    println parameters.type
-    println parameters.type2
-
-    println "${parameters.type}"
-    println "${parameters.type2}"
-
-    println "check branch info"
-    println "${parameters.branch_name}"
-    
-
     if (parameters.type=='push') {
         if (checkDiff()) {
             sshagent (credentials: ['f1fe8468-e322-4b55-8599-0a3a6b79acbb']) {
@@ -37,7 +26,7 @@ def call(body) {
                 sh("git checkout -b auto-${BUILD_NUMBER} ")
                 sh("git add .")
                 sh("git commit -m 'auto-commit-${parameters?.commitMessage}'")
-                sh("git push origin auto-${BUILD_NUMBER}")                
+                sh("git push origin auto-${BUILD_NUMBER}-${parameters.branch_suffix ?: info }")                
             }                    
         }
     }
