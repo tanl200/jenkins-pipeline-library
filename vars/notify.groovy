@@ -20,12 +20,18 @@ def call(body) {
 
     JSONArray attachments = new JSONArray();
 	JSONObject attachment = new JSONObject();
-	attachment.put('text', "${config?.message}");
+/*	attachment.put('text', "${config?.message}");
 	attachment.put('fallback', "${config?.message}");
-	attachment.put('color', '#ff0000');
+	attachment.put('color', color);
 	attachment.put('title',"${config?.title}");
 	attachment.put('title_link',"${config?.title_link}");
 	attachments.add(attachment);
-
+*/
+	attachment.put('text', "hello");
+	attachment.put('fallback', "moto");
+	attachment.put('color', color);
+	attachment.put('title',"okie");
+	attachment.put('title_link',"yeye");
+	attachments.add(attachment)
     slackSend(color: 'good', channel: "#${config.slackChannel}", attachments: attachments.toString())
 }
