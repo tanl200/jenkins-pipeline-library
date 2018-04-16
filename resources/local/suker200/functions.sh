@@ -76,7 +76,7 @@ runTerraform() {
 	if [ "${_ACTION}" = "plan" ]
 	then
 		terraform plan > ../../../upload/kops_upload
-		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} ${_SUFFIX_NAME} "../../../upload/kops_upload" 
+		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_upload" ${_SUFFIX_NAME} 
 	elif [ "${_ACTION}" = "apply" ]
 	then
 		terraform apply  -input=false -auto-approve 
