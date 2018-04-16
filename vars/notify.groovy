@@ -21,12 +21,12 @@ def call(body) {
     JSONArray attachments = new JSONArray();
 	JSONObject attachment = new JSONObject();
 	output = readFile('upload/kops_upload')
-	attachment.put('text', "${config.message :? Missing TEXT Field}");
-	attachment.put('fallback', "${config.message :? Missing TEXT Field}");
+	attachment.put('text', "${config.message ?: Missing TEXT Field}");
+	attachment.put('fallback', "${config.message ?: Missing TEXT Field}");
 	attachment.put('color',color);
-	attachment.put('title',"${config.title :? Missing Title}");
-	attachment.put('title_link',"${config.title_link :? Missing Title Link}");
+	attachment.put('title',"${config.title ?: Missing Title}");
+	attachment.put('title_link',"${config.title_link ?: Missing Title Link}");
 	attachments.add(attachment);
 
-    slackSend channel: "#${config.slackChannel :? k8s-build}", attachments: attachments.toString()
+    slackSend channel: "#${config.slackChannel ?: k8s-build}", attachments: attachments.toString()
 }
