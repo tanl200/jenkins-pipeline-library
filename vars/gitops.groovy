@@ -18,7 +18,15 @@ def call(body) {
     body.delegate = parameters
     body()
 
-    if (parameters.action=='push') {
+    println "test git parameters"
+    println parameters.type
+    println parameters.type2
+
+    println "${parameters.type}"
+    println "${parameters.type2}"
+    
+
+    if (parameters.type=='push') {
         if (checkDiff()) {
             sshagent (credentials: ['f1fe8468-e322-4b55-8599-0a3a6b79acbb']) {
                 sh("git config --global user.email ${parameters?.email}")
@@ -31,7 +39,7 @@ def call(body) {
         }
     }
 
-    if (parameters.action=='pull') {
+    if (parameters.type=='pull') {
         sshagent (credentials: ['f1fe8468-e322-4b55-8599-0a3a6b79acbb']) {
             sh("git checkout -b ${parameters.branch} ")
             sh("git pull")
