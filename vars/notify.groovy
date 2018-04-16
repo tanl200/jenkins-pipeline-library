@@ -20,7 +20,6 @@ def call(body) {
 
     JSONArray attachments = new JSONArray();
 	JSONObject attachment = new JSONObject();
-	output = readFile('upload/kops_upload')
 	attachment.put('text', "${config?.message}");
 	attachment.put('fallback', "${config?.message}");
 	attachment.put('color',color);
