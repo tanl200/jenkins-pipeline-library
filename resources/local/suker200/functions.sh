@@ -71,6 +71,8 @@ Terraform() {
 	_PROJECT=$(getProjectName)
 
 	_RUN=$1
+	_TERRAFORM_DIR=${2:-.}
+	_SUFFIX_NAME=${3}
 
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
@@ -81,8 +83,6 @@ Terraform() {
 	prepareTerraform
 
 	if [ "${_RUN}" = "plan" ]; then
-		_TERRAFORM_DIR=${2:-.}
-		_SUFFIX_NAME=${3}
 		runTerraform plan ${_PROJECT} ${_TERRAFORM_DIR} ${_SUFFIX_NAME}
 
 	elif [ "${_RUN}" = "apply" ]; then
