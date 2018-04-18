@@ -116,7 +116,10 @@ runTerraform() {
 		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_upload" ${_SUFFIX_NAME} 
 
 	elif [ "${_ACTION}" = "apply" ]; then
-		terraform apply  -input=false -auto-approve 
+		terraform apply  -input=false -auto-approve
+
+	else
+		exit 129
 	fi
 }
 
