@@ -123,7 +123,7 @@ runTerraform() {
 		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_plan" ${_SUFFIX_NAME}
 
 	elif [ "${_ACTION}" = "apply" ]; then
-		terraform apply  -input=false -auto-approve > > ../../../upload/kops_apply
+		terraform apply  -input=false -auto-approve > ../../../upload/kops_apply
 		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_apply" ${_SUFFIX_NAME}
 
 	elif [ "${_ACTION}" = "destroy" ]; then
