@@ -16,10 +16,6 @@ getOpsType() {
 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD) | cut -d ":" -f1)
 }
 
-# getCommitAction() {
-# 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD) | cut -d ":" -f2)
-# }
-
 getProjectName() {
 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD) | cut -d ":" -f2)
 }
@@ -33,7 +29,7 @@ getCommitID() {
 }
 
 Kops() {
-	_PROJECT=$(getProjectName)
+	local _PROJECT=$(getProjectName)
 
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
@@ -68,11 +64,11 @@ runKops() {
 }
 
 Terraform() {
-	_PROJECT=$(getProjectName)
+	local _PROJECT=$(getProjectName)
 
-	_RUN=$1
-	_TERRAFORM_DIR=${2:-.}
-	_SUFFIX_NAME=${3}
+	local _RUN=$1
+	local _TERRAFORM_DIR=${2:-.}
+	local _SUFFIX_NAME=${3}
 
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
@@ -107,13 +103,13 @@ prepareTerraform() {
 }
 
 runTerraform() {
-	_ACTION=$1
-	_PROJECT=$2
-	_TERRAFORM_DIR=$3
-	_SUFFIX_NAME=$4
+	local _ACTION=$1
+	local _PROJECT=$2
+	local _TERRAFORM_DIR=$3
+	local _SUFFIX_NAME=$4
 
 	cd projects/${_PROJECT}/$_TERRAFORM_DIR
-	terraform init
+	terraform init -backend-config=tf_backend
 
 	if [ "${_ACTION}" = "plan" ]; then
 		terraform plan > ../../../upload/kops_upload
@@ -125,11 +121,11 @@ runTerraform() {
 }
 
 runUpload() {
-	_PROJECT=$1
-	_FILE_NAME=$2
-	_FILE_UPLOAD_NAME=$3
-	_SUFFIX_NAME=$4
-	_UPLOAD_TOKEN=${UPLOAD_TOKEN:-unkown}
-	_UPLOAD_SERVER=${UPLOAD_SERVER:-127.0.0.1}
+	local _PROJECT=$1
+	local _FILE_NAME=$2
+	local _FILE_UPLOAD_NAME=$3
+	local _SUFFIX_NAME=$4
+	local _UPLOAD_TOKEN=${UPLOAD_TOKEN:-unkown}
+	local _UPLOAD_SERVER=${UPLOAD_SERVER:-127.0.0.1}
 	curl -X PUT  -Ffile=@${_FILE_UPLOAD_NAME} ${_UPLOAD_SERVER}/files/${_PROJECT}-${_FILE_NAME}${_SUFFIX_NAME}?token=${_UPLOAD_TOKEN}
 }
