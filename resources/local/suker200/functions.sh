@@ -20,6 +20,10 @@ getProjectName() {
 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD) | cut -d ":" -f2)
 }
 
+getActionType() {
+	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD) | cut -d ":" -f3)
+}
+
 getCommitMessage() {
 	echo $(git log --format=%s%b -n 1 $(git rev-parse HEAD))
 }
@@ -84,6 +88,9 @@ Terraform() {
 	elif [ "${_RUN}" = "apply" ]; then
 		runTerraform apply ${_PROJECT} ${_TERRAFORM_DIR}
 
+	elif [ "${_RUN}" = "destroy" ]; then
+		runTerraform destroy ${_PROJECT} ${_TERRAFORM_DIR}
+
 	else
 		echo "${_RUN} is not support action type"
 		exit 1
@@ -112,14 +119,16 @@ runTerraform() {
 	terraform init -backend-config=tf_backend
 
 	if [ "${_ACTION}" = "plan" ]; then
-		terraform plan > ../../../upload/kops_upload
-		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_upload" ${_SUFFIX_NAME} 
+		terraform plan > ../../../upload/kops_plan
+		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_plan" ${_SUFFIX_NAME}
 
 	elif [ "${_ACTION}" = "apply" ]; then
-		terraform apply  -input=false -auto-approve
+		terraform apply  -input=false -auto-approve > > ../../../upload/kops_apply
+		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_apply" ${_SUFFIX_NAME}
 
-	else
-		exit 129
+	elif [ "${_ACTION}" = "destroy" ]; then
+		terraform destroy -auto-approve > ../../../upload/kops_destroy
+		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_destroy" ${_SUFFIX_NAME}
 	fi
 }
 
