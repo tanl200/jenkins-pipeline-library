@@ -35,6 +35,8 @@ getCommitID() {
 Kops() {
 	local _PROJECT=$(getProjectName)
 
+	prepareKops
+
 	# Generate kops_cluster + kops_template file
 	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
 	# Load ENV file generate from kops_generator.py
@@ -45,8 +47,6 @@ Kops() {
 	if [ ! -d "${_TEMP_DIR}" ]; then
 		mkdir -p ${_TEMP_DIR}
 	fi
-
-	prepareKops
 
 	runKops
 }
