@@ -35,6 +35,12 @@ getCommitID() {
 Kops() {
 	local _PROJECT=$(getProjectName)
 
+	if [ ! -d "${_TEMP_DIR}" ]; then
+		mkdir -p ${_TEMP_DIR}
+	fi
+
+	. ./projects/${_PROJECT}/ENV
+
 	prepareKops
 
 	# Generate kops_cluster + kops_template file
@@ -42,20 +48,11 @@ Kops() {
 	# Load ENV file generate from kops_generator.py
 	# CLUSTER_NAME=xxx
 	# KOPS_VERSION=xxx
-	. ./projects/${_PROJECT}/ENV
-
-	if [ ! -d "${_TEMP_DIR}" ]; then
-		mkdir -p ${_TEMP_DIR}
-	fi
 
 	runKops
 }
 
 prepareKops() {
-	if [ ! -d "${_TEMP_DIR}" ]; then
-		mkdir -p ${_TEMP_DIR}
-	fi
-	
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
 	~/.local/bin/pip2 install --user -r requirements.txt
 
