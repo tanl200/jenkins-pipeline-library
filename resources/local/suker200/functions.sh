@@ -52,6 +52,10 @@ Kops() {
 }
 
 prepareKops() {
+	if [ ! -d "${_TEMP_DIR}" ]; then
+		mkdir -p ${_TEMP_DIR}
+	fi
+	
 	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
 	~/.local/bin/pip2 install --user -r requirements.txt
 
