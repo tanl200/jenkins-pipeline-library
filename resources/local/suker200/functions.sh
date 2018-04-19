@@ -39,12 +39,16 @@ Kops() {
 		mkdir -p ${_TEMP_DIR}
 	fi
 
+	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
+	~/.local/bin/pip2 install --user -r requirements.txt
+
+	# Generate kops_cluster + kops_template file
+	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
+
 	. ./projects/${_PROJECT}/ENV
 
 	prepareKops
 
-	# Generate kops_cluster + kops_template file
-	python2 kops_generator.py --config projects/${_PROJECT}/config.yaml --template projects/${_PROJECT}/kops_template.yaml --project ${_PROJECT}
 	# Load ENV file generate from kops_generator.py
 	# CLUSTER_NAME=xxx
 	# KOPS_VERSION=xxx
@@ -53,9 +57,6 @@ Kops() {
 }
 
 prepareKops() {
-	curl https://bootstrap.pypa.io/get-pip.py | python2.7 - --user
-	~/.local/bin/pip2 install --user -r requirements.txt
-
 	curl -L https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64 -o ${_TEMP_DIR}/kops && chmod +x ${_TEMP_DIR}/kops
 }
 
