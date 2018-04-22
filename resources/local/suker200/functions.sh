@@ -121,7 +121,7 @@ runTerraform() {
 	terraform init -backend-config=tf_backend
 
 	if [ "${_ACTION}" = "plan" ]; then
-		terraform plan > ../../../upload/kops_plan
+		terraform plan -no-color > ../../../upload/kops_plan
 		runUpload ${_PROJECT} ${JOB_NAME}-${BUILD_NUMBER} "../../../upload/kops_plan" ${_SUFFIX_NAME}
 
 	elif [ "${_ACTION}" = "apply" ]; then
